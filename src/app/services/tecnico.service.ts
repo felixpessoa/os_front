@@ -27,8 +27,8 @@ export class TecnicoService {
     return this.http.post<Tecnico>(url, tecnico);
   }
 
-  message(msg: string):void {
-    this.snack.open('${msg}', 'ok', {
+  message(msg: [string]):void {
+    this.snack.open(`${msg}`, 'ok', {
       horizontalPosition: 'end',
       verticalPosition: 'top',
       duration: 4000

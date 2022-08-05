@@ -37,6 +37,6 @@ export class TecnicoReadComponent implements AfterViewInit {
   }
 
   navigateToCreate():void {
-    this.router.navigate(['tecnicos/create']) 
+    this.router.navigate(['tecnicos/create']);
   }
 }

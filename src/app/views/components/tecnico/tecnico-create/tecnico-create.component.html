@@ -1,17 +1,17 @@
-<form class="form">
+<form [formGroup]="form" (ngSubmit)="create(); $event.preventDefault()" class="form">
     <h1>Criando Novo Técnico</h1>
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Nome</mat-label>
-      <input [(ngModel)]="tecnico.nome" name="nome" matInput placeholder="Seu Nome">
+      <input [(ngModel)]="tecnico.nome" matInput placeholder="Seu Nome" formControlName="nome">
     </mat-form-field>
     <mat-form-field class="full-width" appearance="fill">
         <mat-label>CPF</mat-label>
-        <input [(ngModel)]="tecnico.cpf" name="cpf" matInput placeholder="999.999.999-99">
+        <input [(ngModel)]="tecnico.cpf" name="cpf" matInput placeholder="999.999.999-99" formControlName="cpf">
       </mat-form-field>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Telefone</mat-label>
-        <input [(ngModel)]="tecnico.telefone" name="telefone" matInput placeholder="(00) 99999-9999">
+        <input [(ngModel)]="tecnico.telefone" name="telefone" matInput placeholder="(00) 99999-9999" formControlName="telefone" >
       </mat-form-field>
         <button (click)="create()" mat-stroked-button color="accent">Criar</button>
         <button (click)="cancel()" mat-stroked-button color="warn">Cancelar</button>
-</form> 
+</form>
