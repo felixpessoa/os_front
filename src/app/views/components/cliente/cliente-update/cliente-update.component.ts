@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Tecnico } from 'src/app/model/tecnico';
-import { TecnicoService } from 'src/app/services/tecnico.service';
+import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Cliente } from 'src/app/model/cliente';
+import { ClienteService } from 'src/app/services/cliente.service';
 
 @Component({
-  selector: 'app-tecnico-create',
-  templateUrl: './tecnico-create.component.html',
-  styleUrls: ['./tecnico-create.component.css']
+  selector: 'app-cliente-update',
+  templateUrl: './cliente-update.component.html',
+  styleUrls: ['./cliente-update.component.css']
 })
-export class TecnicoCreateComponent implements OnInit {
+export class ClienteUpdateComponent implements OnInit {
 
-  tecnico: Tecnico = {
+  id_cli = '';
+
+  cliente: Cliente = {
     id: '',
     nome: '',
     cpf: '',
@@ -25,21 +27,30 @@ export class TecnicoCreateComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private service: TecnicoService
+    private service: ClienteService,
+    private route: ActivatedRoute
   ) { }
 
 
   ngOnInit(): void {
+    this.id_cli = this.route.snapshot.paramMap.get('id')!;
+    this.findById();
+  }
+
+  findById(): void{
+    this.service.findById(this.id_cli).subscribe(resp => {
+      this.cliente = resp;
+    })
   }
 
   cancel(): void {
-    this.router.navigate(['tecnicos'])
+    this.router.navigate(['clientes'])
   }
 
-  create(): void {
-    this.service.create(this.tecnico).subscribe((resposta) => {
-      this.router.navigate(['tecnicos']);
-      this.service.message(['Técnico criado com sucesso!']);
+  update(): void {
+    this.service.update(this.cliente).subscribe((resposta) => {
+      this.router.navigate(['clientes']);
+      this.service.message(['Cliente atualizado com sucesso!']);
     }, err => {
       // if (err.error.error.match('já cadastrado')) {
       //   this.service.message(err.error.error)
@@ -64,6 +75,8 @@ export class TecnicoCreateComponent implements OnInit {
 
     )
   }
+
+
   errorValidName(){
     if(this.nome.invalid){
       return 'O nome deve ter entre 5 caracteres ate 100!';

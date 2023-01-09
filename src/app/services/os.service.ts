@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Tecnico } from '../model/tecnico';
+import { OS } from '../model/os';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TecnicoService {
+export class OsService {
 
   baseUrl: string = environment.baseUrl;
 
@@ -17,28 +17,28 @@ export class TecnicoService {
     private snack: MatSnackBar
   ) {}
 
-  findAll(): Observable<Tecnico[]> {
-    const url = this.baseUrl + "/tecnicos";
-    return this.http.get<Tecnico[]>(url);
+  findAll(): Observable<OS[]> {
+    const url = this.baseUrl + "/os";
+    return this.http.get<OS[]>(url);
   }
 
-  findById(id: any): Observable<Tecnico>{
-    const url = `${this.baseUrl}/tecnicos/${id}`;
-    return this.http.get<Tecnico>(url);
+  findById(id: any): Observable<OS>{
+    const url = `${this.baseUrl}/os/${id}`;
+    return this.http.get<OS>(url);
   }
 
-  create(tecnico: Tecnico): Observable<Tecnico>{
-    const url = this.baseUrl + "/tecnicos"
-    return this.http.post<Tecnico>(url, tecnico);
+  create(os: OS): Observable<OS>{
+    const url = this.baseUrl + "/os"
+    return this.http.post<OS>(url, os);
   }
 
-  update(tecnico: Tecnico): Observable<Tecnico>{
-    const url = `${this.baseUrl}/tecnicos/${tecnico.id}`;
-    return this.http.put<Tecnico>(url, tecnico);
+  update(os: OS): Observable<OS>{
+    const url = `${this.baseUrl}/os`;
+    return this.http.put<OS>(url, os);
   }
 
   delete(id: any): Observable<void>{
-    const url = `${this.baseUrl}/tecnicos/${id}`;
+    const url = `${this.baseUrl}/os/${id}`;
     return this.http.delete<void>(url);
   }
 

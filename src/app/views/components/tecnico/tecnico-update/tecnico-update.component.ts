@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Action } from 'rxjs/internal/scheduler/Action';
 import { Tecnico } from 'src/app/model/tecnico';
 import { TecnicoService } from 'src/app/services/tecnico.service';
 
 @Component({
-  selector: 'app-tecnico-create',
-  templateUrl: './tecnico-create.component.html',
-  styleUrls: ['./tecnico-create.component.css']
+  selector: 'app-tecnico-update',
+  templateUrl: './tecnico-update.component.html',
+  styleUrls: ['./tecnico-update.component.css']
 })
-export class TecnicoCreateComponent implements OnInit {
+export class TecnicoUpdateComponent implements OnInit {
+
+  id_tec = '';
 
   tecnico: Tecnico = {
     id: '',
@@ -22,24 +25,27 @@ export class TecnicoCreateComponent implements OnInit {
   cpf = new FormControl('', [Validators.minLength(11)])
   telefone = new FormControl('', [Validators.minLength(11)])
 
-
   constructor(
     private router: Router,
-    private service: TecnicoService
+    private service: TecnicoService,
+    private route: ActivatedRoute
   ) { }
 
-
   ngOnInit(): void {
+    this.id_tec = this.route.snapshot.paramMap.get('id')!;
+    this.findById();
   }
 
-  cancel(): void {
-    this.router.navigate(['tecnicos'])
+  findById(){
+    this.service.findById(this.id_tec).subscribe(resp => {
+      this.tecnico = resp;
+    })
   }
 
-  create(): void {
-    this.service.create(this.tecnico).subscribe((resposta) => {
-      this.router.navigate(['tecnicos']);
-      this.service.message(['Técnico criado com sucesso!']);
+  update(): void {
+    this.service.update(this.tecnico).subscribe(resp => {
+      this.router.navigate(['tecnicos'])
+      this.service.message(['Tecnico atualuzado com suvesso!']);
     }, err => {
       // if (err.error.error.match('já cadastrado')) {
       //   this.service.message(err.error.error)
@@ -61,9 +67,9 @@ export class TecnicoCreateComponent implements OnInit {
       }
       console.log(err);
     }
-
-    )
+      )
   }
+
   errorValidName(){
     if(this.nome.invalid){
       return 'O nome deve ter entre 5 caracteres ate 100!';
@@ -83,6 +89,10 @@ export class TecnicoCreateComponent implements OnInit {
       return 'O telefone deve ter entre 11 e 18!';
     }
     return false;
+  }
+
+  cancel(): void {
+    this.router.navigate(['tecnicos'])
   }
 
 }
